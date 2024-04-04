@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Load and Style XML Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .person {
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .name {
+      color: #333;
+      font-size: 20px;
+    }
+    .email {
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="xmlContent">XML content will be loaded here...</div>
+
+  <script>
+    function loadXML() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "data.xml", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var xmlDoc = xhr.responseXML;
+          var peopleHTML = '';
+          var people = xmlDoc.getElementsByTagName("person");
+          for (var i = 0; i < people.length; i++) {
+            peopleHTML += '<div class="person"><p class="name">' +
+            people[i].getElementsByTagName("name")[0].childNodes[0].nodeValue +
+            '</p><p class="email">' +
+            people[i].getElementsByTagName("email")[0].childNodes[0].nodeValue +
+            '</p></div>';
+          }
+          document.getElementById("xmlContent").innerHTML = peopleHTML;
+        }
+      };
+      xhr.send();
+    }
+    window.onload = loadXML;
+  </script>
+</body>
+</html>
